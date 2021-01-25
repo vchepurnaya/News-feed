@@ -3,15 +3,10 @@ import Header from './components/Header/Header';
 import Filter from './components/Filter/Filter';
 import NewsInput from './components/News/NewsInput';
 import NewsList from './components/News/NewsList';
+import {NewItem} from "./entity/NewItem";
+import {getNews} from "./service/NewItemService";
 
-type Filter = {
-  id: string,
-  value: string,
-  title: string
-}
-
-
-const  FILTERS: Array<Filter> = [
+const  FILTERS = [
   { id: '1', value: 'sport', title: 'Спорт' },
   { id: '2', value: 'travelling', title: 'Путешествия' },
   { id: '3', value: 'realty', title: 'Недвижимость' },
@@ -26,14 +21,9 @@ const ORDER_BY_DESC = 'desc';
 
 
 const App: React.FC = () => {
-  let news = JSON.parse(localStorage.getItem('news'));
+  const news: Array<NewItem> = getNews();
 
-  if (news === null) {
-    news = [];
-    localStorage.setItem('news', JSON.stringify([]));
-  }
-
-  const [newsList, setNewsList] = useState<string>(news);
+  const [newsList, setNewsList] = useState<Array<NewItem>>(news);
   const [id, setId] = useState<number>(Math.floor(Math.random() * 1000000))
   const [title, setTitle] = useState<string>('');
   const [text, setText] = useState<string>('');

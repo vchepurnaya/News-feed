@@ -1,6 +1,8 @@
 import React from 'react';
-import './News.css';
+//import './News.css';
 import {DEFAULT_CATEGORY} from '../../App';
+import {NewItem} from "../../entity/NewItem";
+import {addNewItem, getNewItemById, getNews, updateNewItem} from "../../service/NewItemService";
 
 type Filter = {
     id: string,
@@ -21,17 +23,8 @@ type newsInputProps = {
     setNewsList: any,
     setId: any,
     setEditNewsItem: any,
+    newsList: Array<NewItem>
 }
-
-type NewItem = {
-    id: number,
-    title: string,
-    text: string,
-    category: string,
-    date: object,
-    editedFlag: boolean
-}
-
 
 const NewsInput: React.FC<newsInputProps> = ({
                        filters,
@@ -62,19 +55,11 @@ const NewsInput: React.FC<newsInputProps> = ({
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        const newItem: NewItem = {
-            id: id,
-            title: title,
-            text: text,
-            category: category,
-            date: new Date(),
-            editedFlag: false
-        };
 
-        saveNewsList(newItem);
-        const updatedItems = JSON.parse(localStorage.getItem('news'));
+        let newItem: NewItem = new NewItem(id, title, text, category, new Date(), false);
+        addNewItem(newItem);
 
-        setNewsList(updatedItems);
+        setNewsList(getNews());
         setId(Math.floor(Math.random() * 1000000));
         setTitle('');
         setText('');
@@ -84,28 +69,15 @@ const NewsInput: React.FC<newsInputProps> = ({
     const handleUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        const news = JSON.parse(localStorage.getItem('news'));
+        let newItem: NewItem = new NewItem(id, title, text, category, new Date(), true);
+        updateNewItem(newItem)
 
-        const updatingItem = news.find(item => item.id === id);
-        updatingItem.title = title;
-        updatingItem.text = text;
-        updatingItem.category = category;
-        updatingItem.date = new Date();
-        updatingItem.editedFlag = true;
-
-        setNewsList(news);
-        localStorage.setItem('news', JSON.stringify(news));
-
+        setNewsList(getNews());
         setId(Math.floor(Math.random() * 1000000));
         setTitle('');
         setText('');
         setCategory(DEFAULT_CATEGORY);
         setEditNewsItem(false);
-    }
-
-    const saveNewsList = (newItem: NewItem) => {
-        let news = JSON.parse(localStorage.getItem('news'));
-        localStorage.setItem('news', JSON.stringify([...news, newItem]));
     }
 
     return (

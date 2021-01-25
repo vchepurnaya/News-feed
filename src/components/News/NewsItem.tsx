@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
-import './News.css';
+//import './News.css';
 
 type NewsItemProps = {
     title: string,
     text: string,
     category: string,
-    date: object,
+    date: Date,
     editedFlag: boolean,
     handleDelete: any,
     handleEdit: any

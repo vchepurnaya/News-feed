@@ -1,21 +1,14 @@
 import React from 'react';
 import NewsItem from './NewsItem';
-import './News.css';
+//import './News.css';
 import { ORDER_BY_ASC, ORDER_BY_DESC } from '../../App';
-
-type FilteredNews = {
-    category: string
-    date: any
-    editedFlag: boolean
-    id: number,
-    text: string
-    title: string
-}
+import {getNewItemById, getNews, removeNewItem} from "../../service/NewItemService";
+import {NewItem} from "../../entity/NewItem";
 
 type NewsListProps = {
-    newsList: any,
+    newsList: Array<NewItem>,
     search: any,
-    orderBy: any,
+    orderBy: string,
     setNewsList :any,
     setId: any,
     setTitle: any,
@@ -39,48 +32,41 @@ const NewsList: React.FC<NewsListProps> = ({
                   }) =>  {
 
     const handleDelete = (id: number) => {
-        newsList = newsList.filter(
-            item => item.id !== id
-        );
-
-        setNewsList(newsList);
-        localStorage.setItem('news', JSON.stringify(newsList));
+        removeNewItem(id);
+        setNewsList(getNews());
     }
 
     const handleSortNews = () => {
-        const news: Array<FilteredNews> = JSON.parse(localStorage.getItem('news'));
-        const isAsc: boolean = orderBy === ORDER_BY_ASC;
+        let news: Array<NewItem> = getNews();
+        let isAsc: boolean = orderBy === ORDER_BY_ASC;
 
-        const sortedNews: Array<FilteredNews> = news.sort((item1: FilteredNews, item2: FilteredNews) => {
-            let date1: any = new Date(item1.date);
-            let date2: any = new Date(item2.date);
+        news = news.sort((newItem1, newItem2) => {
+            let date1: number = new Date(newItem1.date).getTime();
+            let date2: number = new Date(newItem2.date).getTime();
 
-            if (isAsc) {
-                return date1 - date2;
-            } else {
-                return date2 - date1;
-            }
-        })
+            return isAsc ? date1 - date2 : date2 - date1;
+        });
 
-        setNewsList(sortedNews);
+        setNewsList(news);
         setOrderBy(isAsc ? ORDER_BY_DESC : ORDER_BY_ASC);
     }
 
     const handleEdit = (id: number) => {
-        const selectedItem = newsList.find(item => item.id === id);
-        setId(selectedItem.id);
-        setTitle(selectedItem.title);
-        setText(selectedItem.text);
-        setCategory(selectedItem.category);
+        let selectedNewItem = getNewItemById(id);
 
-        setNewsList([]);
-        setEditNewsItem(true);
+        if (selectedNewItem !== undefined && selectedNewItem !== null) {
+            setId(selectedNewItem.id);
+            setTitle(selectedNewItem.title);
+            setText(selectedNewItem.text);
+            setCategory(selectedNewItem.category);
+
+            setNewsList([]);
+            setEditNewsItem(true);
+        }
     }
 
-    const filteredNews: Array<FilteredNews> = newsList.filter(item => (
-            item.text.toLowerCase().indexOf(search.toLowerCase()) !== -1
-        )
-    );
+    const filteredNews: Array<NewItem> = newsList.filter(newItem =>
+        newItem.text.toLowerCase().indexOf(search.toLowerCase()) !== -1);
 
     return (
         <div className="container">

@@ -13,11 +13,9 @@ export const getNews = (): Array<NewItem> => {
     return news;
 }
 
-export const getNewItemById = (id: number): NewItem => {
+export const getNewItemById = (id: number) => {
     let news: Array<NewItem> = getNews();
-    let newItem: NewItem = news.find(newItem => newItem.id === id);
-
-    return newItem;
+    return news.find(newItem => newItem.id === id);
 }
 
 export const setNews = (news: Array<NewItem>) => {
@@ -30,16 +28,16 @@ export const addNewItem = (newItem: NewItem) => {
     setNews(news);
 }
 
-export const updateNewItem = (updatedNewItem: NewItem) => {
+export const updateNewItem = (newItem: NewItem) => {
     let news: Array<NewItem> = getNews();
-    let updatingNewItem: NewItem = news.find(newItem => newItem.id === updatedNewItem.id);
+    let updatingNewItem = news.find(ni => ni.id === newItem.id);
 
     if (updatingNewItem !== undefined && updatingNewItem !== null) {
-        updatingNewItem.title = updatedNewItem.title;
-        updatingNewItem.text = updatedNewItem.text;
-        updatingNewItem.category = updatedNewItem.category;
-        updatingNewItem.date = updatedNewItem.date;
-        updatingNewItem.editedFlag = updatedNewItem.editedFlag;
+        updatingNewItem.title = newItem.title;
+        updatingNewItem.text = newItem.text;
+        updatingNewItem.category = newItem.category;
+        updatingNewItem.date = newItem.date;
+        updatingNewItem.editedFlag = newItem.editedFlag;
 
         setNews(news);
     }
