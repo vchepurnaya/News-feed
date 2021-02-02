@@ -1,0 +1,42 @@
+.header {
+    height: 70px;
+    width: 100%;
+    background-color: #ffffff;
+    position: relative;
+}
+
+.header__title {
+    text-align: center;
+    font-size: 36px;
+    margin: 0;
+}
+
+.header__nav {
+    position: absolute;
+    right: 10px;
+    top: calc((70px - 50px) / 2);
+    display: flex;
+}
+
+.header__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 150px;
+    cursor: pointer;
+    margin-right: 10px;
+    border-radius: 3px;
+    transition: .2s ease-in-out;
+}
+
+.header__link:hover {
+    background-color: rgba(122, 119, 119, 0.1);
+}
+
+.header__link-item {
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #000000;
+}

@@ -1,75 +1,53 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import Header from './components/Header/Header';
-import Filter from './components/Filter/Filter';
-import NewsInput from './components/News/NewsInput';
-import NewsList from './components/News/NewsList';
-import {NewItem} from "./entity/NewItem";
-import {getNews} from "./service/NewItemService";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Home from './components/Home/Home';
+import Entry from './components/Authorization/Entry';
+import Registration from './components/Authorization/Registration';
+import Error from './components/Authorization/Error';
 
-const  FILTERS = [
-  { id: '1', value: 'sport', title: 'Спорт' },
-  { id: '2', value: 'travelling', title: 'Путешествия' },
-  { id: '3', value: 'realty', title: 'Недвижимость' },
-  { id: '4', value: 'people', title: 'Люди' },
-  { id: '5', value: 'other', title: 'Другое' }
-]
-
-const DEFAULT_CATEGORY: string = FILTERS[0].title;
-
-const ORDER_BY_ASC = 'asc';
-const ORDER_BY_DESC = 'desc';
 
 
 const App: React.FC = () => {
-  const news: Array<NewItem> = getNews();
-
-  const [newsList, setNewsList] = useState<Array<NewItem>>(news);
-  const [id, setId] = useState<number>(Math.floor(Math.random() * 1000000))
-  const [title, setTitle] = useState<string>('');
-  const [text, setText] = useState<string>('');
-  const [category, setCategory] = useState<string>(DEFAULT_CATEGORY);
-  const [editNewsItem, setEditNewsItem] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>('');
-  const [orderBy, setOrderBy] = useState<string>(ORDER_BY_ASC);
-
   return (
       <Fragment>
         <Header/>
-        <div className="wrapper">
-          <Filter
-              setSearch={setSearch}
-          />
-          <NewsInput
-              filters={FILTERS}
-              title={title}
-              text={text}
-              category={category}
-              editNewsItem={editNewsItem}
-              setTitle={setTitle}
-              setText={setText}
-              setCategory={setCategory}
-              setNewsList={setNewsList}
-              setId={setId}
-              setEditNewsItem={setEditNewsItem}
-              newsList={newsList}
-              id={id}
-          />
-          <NewsList
-              newsList={newsList}
-              search={search}
-              orderBy={orderBy}
-              setNewsList={setNewsList}
-              setId={setId}
-              setTitle={setTitle}
-              setText={setText}
-              setCategory={setCategory}
-              setEditNewsItem={setEditNewsItem}
-              setOrderBy={setOrderBy}
-          />
-        </div>
+          <Router>
+              <nav className="header__nav">
+                  <div className="header__link">
+                      <Link
+                          className="header__link-item"
+                          to="/"
+                      >
+                          Главная
+                      </Link>
+                  </div>
+                  <div className="header__link">
+                      <Link
+                          to="/entry"
+                          className="header__link-item"
+                      >
+                          Войти
+                      </Link>
+                  </div>
+                  <div className="header__link">
+                      <Link
+                          className="header__link-item"
+                          to="/registration"
+                      >
+                          Регистрация
+                      </Link>
+                  </div>
+              </nav>
+                  <Switch>
+                      <Route exact path='/' component={Home} />
+                      <Route exact path='/entry' component={Entry} />
+                      <Route exact path='/registration' component={Registration}/>
+                      <Route component={Error} />
+                  </Switch>
+          </Router>
       </Fragment>
   );
 }
 
 export default App;
-export { DEFAULT_CATEGORY, ORDER_BY_ASC, ORDER_BY_DESC };

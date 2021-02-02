@@ -1,4 +1,4 @@
-import {NewItem} from "../entity/NewItem";
+import { NewItem } from '../entity/NewItem';
 
 export const getNews = (): Array<NewItem> => {
     let newsJson = localStorage.getItem('news');

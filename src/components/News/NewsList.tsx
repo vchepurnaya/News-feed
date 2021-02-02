@@ -1,15 +1,15 @@
 import React from 'react';
 import NewsItem from './NewsItem';
-//import './News.css';
-import { ORDER_BY_ASC, ORDER_BY_DESC } from '../../App';
-import {getNewItemById, getNews, removeNewItem} from "../../service/NewItemService";
-import {NewItem} from "../../entity/NewItem";
+import './News.css';
+import { ORDER_BY_ASC, ORDER_BY_DESC} from '../../assets/variables';
+import { getNewItemById, getNews, removeNewItem } from '../../service/NewItemService';
+import { NewItem } from '../../entity/NewItem';
 
 type NewsListProps = {
     newsList: Array<NewItem>,
-    search: any,
+    search: string,
     orderBy: string,
-    setNewsList :any,
+    setNewsList: any,
     setId: any,
     setTitle: any,
     setText: any,
@@ -19,17 +19,17 @@ type NewsListProps = {
 }
 
 const NewsList: React.FC<NewsListProps> = ({
-                      newsList,
-                      search,
-                      orderBy,
-                      setNewsList,
-                      setId,
-                      setTitle,
-                      setText,
-                      setCategory,
-                      setEditNewsItem,
-                      setOrderBy
-                  }) =>  {
+  newsList,
+  search,
+  orderBy,
+  setNewsList,
+  setId,
+  setTitle,
+  setText,
+  setCategory,
+  setEditNewsItem,
+  setOrderBy
+}) =>  {
 
     const handleDelete = (id: number) => {
         removeNewItem(id);

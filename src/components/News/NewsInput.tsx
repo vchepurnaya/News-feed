@@ -1,17 +1,11 @@
 import React from 'react';
-//import './News.css';
-import {DEFAULT_CATEGORY} from '../../App';
-import {NewItem} from "../../entity/NewItem";
-import {addNewItem, getNewItemById, getNews, updateNewItem} from "../../service/NewItemService";
+import './News.css';
+import { DEFAULT_CATEGORY, FILTERS } from '../../assets/variables';
+import { NewItem } from '../../entity/NewItem';
+import { addNewItem, getNews, updateNewItem } from '../../service/NewItemService';
 
-type Filter = {
-    id: string,
-    value: string,
-    title: string
-}
 
 type newsInputProps = {
-    filters: Array<Filter>,
     title: string,
     text: string,
     category: string,
@@ -27,19 +21,18 @@ type newsInputProps = {
 }
 
 const NewsInput: React.FC<newsInputProps> = ({
-                       filters,
-                       title,
-                       text,
-                       category,
-                       setTitle,
-                       setText,
-                       setCategory,
-                       setNewsList,
-                       setId,
-                       setEditNewsItem,
-                       editNewsItem,
-                       id
-                   }) => {
+   title,
+   text,
+   category,
+   setTitle,
+   setText,
+   setCategory,
+   setNewsList,
+   setId,
+   setEditNewsItem,
+   editNewsItem,
+   id
+}) => {
 
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -93,7 +86,6 @@ const NewsInput: React.FC<newsInputProps> = ({
                             onChange={handleChangeTitle}
                             required
                         />
-                        <span className="news__title-bar"/>
                         <label className="news__title-name">Заголовок:</label>
                     </div>
 
@@ -115,7 +107,7 @@ const NewsInput: React.FC<newsInputProps> = ({
                                 name="select"
                                 value={category}
                                 onChange={handleChangeCategory}>
-                                {filters.map(({ id, title }) => (
+                                {FILTERS.map(({ id, title }) => (
                                     <option
                                         className="news__category-option"
                                         key={id}

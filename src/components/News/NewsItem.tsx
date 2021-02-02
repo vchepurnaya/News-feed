@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-//import './News.css';
+import React, { Fragment, useState } from 'react';
+import './News.css';
 
 type NewsItemProps = {
     title: string,
@@ -12,19 +12,28 @@ type NewsItemProps = {
 }
 
 const NewsItem: React.FC<NewsItemProps> = ({
-                      title,
-                      text,
-                      category,
-                      date,
-                      editedFlag,
-                      handleDelete,
-                      handleEdit
-                  }) => {
+  title,
+  text,
+  category,
+  date,
+  editedFlag,
+  handleDelete,
+  handleEdit
+}) => {
+    const [readMore, setReadMore] = useState(false);
+
     return (
         <Fragment>
             <li className="news__item">
                 <h3 className="news__item-title">{title}</h3>
-                <p className="news__item-text">{text}</p>
+                <p className="news__item-text">
+                    {readMore ? text : text.substring(0, 200)} . . .
+                    <button
+                        className="news__item-btn-readMore"
+                    onClick={() => setReadMore(!readMore)}>
+                        {readMore ? 'Скрыть' : 'Показать полностью'}
+                    </button>
+                </p>
                 <p className="news__item-category">{category}</p>
                 <div className="news__item-btn">
 
