@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+
 import './News.css';
 
 type NewsItemProps = {
@@ -35,6 +36,7 @@ const NewsItem: React.FC<NewsItemProps> = ({
                     </button>
                 </p>
                 <p className="news__item-category">{category}</p>
+                <span></span>
                 <div className="news__item-btn">
 
                     <button

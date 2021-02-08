@@ -1,13 +1,12 @@
 import React, { FC, MouseEvent, useState } from 'react';
 import { Redirect } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { useInput } from '../../hooks/useInput';
 import { STYLE } from '../../assets/variables';
-import { ADD_USER } from '../../constants';
-import { addUserAction } from '../../actions/actionCreator';
 
 import './Authorization.css';
+import { addUser } from '../../redux/actions/usersAction';
 
 
 const Registration: FC = () => {
@@ -24,7 +23,6 @@ const Registration: FC = () => {
         e.preventDefault();
 
         const user = {
-            type: ADD_USER,
             id: userId,
             name: name.value,
             surname: surname.value,
@@ -33,9 +31,9 @@ const Registration: FC = () => {
             isEntered: false
         }
 
-        dispatch(addUserAction(user));
         setUserId(Math.floor(Math.random() * 1000000));
         setRegistration(true);
+        dispatch(addUser(user));
     }
 
     if (isRegistration) {
@@ -57,8 +55,8 @@ const Registration: FC = () => {
                     />
                     <label className="form__field-name">Имя</label>
                     {(name.isDirty && name.isEmpty) && <span style={STYLE.span}>Поле не должно быть пустым</span>}
-                    {(name.isDirty && name.minLengthError) && <span style={STYLE.span}>Пароль должен содержать не менее 6 символов</span>}
-                    {(name.isDirty && name.maxLengthError) && <span style={STYLE.span}>Пароль не должен содержать более 16 символов</span>}
+                    {(name.isDirty && name.minLengthError) && <span style={STYLE.span}>Поле должно содержать не менее 6 символов</span>}
+                    {(name.isDirty && name.maxLengthError) && <span style={STYLE.span}>Поле должно содержать более 16 символов</span>}
                 </div>
 
                 <div className="form__field">
@@ -73,8 +71,8 @@ const Registration: FC = () => {
                     />
                     <label className="form__field-name">Фамилия</label>
                     {(surname.isDirty && surname.isEmpty) && <span style={STYLE.span}>Поле не должно быть пустым</span>}
-                    {(surname.isDirty && surname.minLengthError) && <span style={STYLE.span}>Пароль должен содержать не менее 6 символов</span>}
-                    {(surname.isDirty && surname.maxLengthError) && <span style={STYLE.span}>Пароль не должен содержать более 16 символов</span>}
+                    {(surname.isDirty && surname.minLengthError) && <span style={STYLE.span}>Поле должно содержать не менее 6 символов</span>}
+                    {(surname.isDirty && surname.maxLengthError) && <span style={STYLE.span}>Поле должно содержать более 16 символов</span>}
                 </div>
 
                 <div className="form__field">

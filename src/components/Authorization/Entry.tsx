@@ -2,11 +2,11 @@ import React, { MouseEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 
-import { getUsers } from '../../service/NewUserService';
 import { useInput } from '../../hooks/useInput';
 import { STYLE } from '../../assets/variables';
 
 import './Authorization.css';
+import { RootState } from '../../redux/store';
 
 
 const Entry: React.FC = () => {
@@ -14,14 +14,12 @@ const Entry: React.FC = () => {
     const password = useInput('', {isEmpty: true, minLength: 6, maxLength: 20});
     const [isPasswordCorrect, setPasswordCorrect] = useState<null | boolean>(null);
     const [isEmailExist, setEmailExist] = useState(false);
-    //const usersList = useSelector(state => state );
-
+    const usersList = useSelector((state: RootState) => state.users);
 
     const handleSubmitEmail = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        let users = getUsers();
-        let isUserExist = users.find((user) => user.email === email.value);
+        let isUserExist = usersList.users.find((user) => user.email === email.value);
 
         if (isUserExist) {
             if (isUserExist.password === password.value)  {
