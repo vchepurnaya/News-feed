@@ -1,15 +1,20 @@
 import React, { MouseEvent, useState } from 'react';
-import './Authorization.css';
-import { getUsers } from '../../service/NewUserService';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
+
+import { getUsers } from '../../service/NewUserService';
 import { useInput } from '../../hooks/useInput';
 import { STYLE } from '../../assets/variables';
+
+import './Authorization.css';
 
 
 const Entry: React.FC = () => {
     const email = useInput('', {isEmpty: true, isEmail: true});
     const password = useInput('', {isEmpty: true, minLength: 6, maxLength: 20});
-    const [isEntry, setEntry] = useState(false);//
+    const [isPasswordCorrect, setPasswordCorrect] = useState<null | boolean>(null);
+    const [isEmailExist, setEmailExist] = useState(false);
+    //const usersList = useSelector(state => state );
 
 
     const handleSubmitEmail = (e: MouseEvent<HTMLButtonElement>) => {
@@ -19,19 +24,23 @@ const Entry: React.FC = () => {
         let isUserExist = users.find((user) => user.email === email.value);
 
         if (isUserExist) {
-          if (isUserExist.password === password.value)  {
-              setEntry(true);
-          } else {
-              console.log('wrong password')
-          }
+            if (isUserExist.password === password.value)  {
+                setPasswordCorrect(true);
+
+            } else {
+                setPasswordCorrect(false);
+            }
         } else {
-            console.log('such user doesnt exist')
+            setEmailExist(true);
         }
     }
 
-    if (isEntry) {
-        return <Redirect to='/' from='/entry'/>
+    if (isPasswordCorrect) {
+        return <Redirect to='/' />
     }
+
+    const { span } = STYLE;
+
     return (
         <div className="form">
             <form className="form__content">
@@ -48,8 +57,8 @@ const Entry: React.FC = () => {
                     />
 
                     <label className="form__field-name">Email</label>
-                    {(email.isDirty && email.isEmpty) && <span style={STYLE.span}>Поле не должно быть пустым</span>}
-                    {(email.isDirty && email.emailError) && <span style={STYLE.span}>Неправильный формат email</span>}
+                    {(email.isDirty && email.isEmpty) && <span style={span}>Поле не должно быть пустым!</span>}
+                    {(email.isDirty && email.emailError) && <span style={span}>Неправильный формат email!</span>}
                 </div>
 
                 <div className="form__field">
@@ -64,21 +73,24 @@ const Entry: React.FC = () => {
                     />
 
                     <label className="form__field-name">Пароль</label>
-                    {(password.isDirty && password.isEmpty) && <span style={STYLE.span}>Поле не должно быть пустым</span>}
-                    {(password.isDirty && password.minLengthError) && <span style={STYLE.span}>Пароль должен содержать не менее 6 символов</span>}
-                    {(password.isDirty && password.maxLengthError) && <span style={STYLE.span}>Пароль не должен содержать более 20 символов</span>}
+                    {(password.isDirty && password.isEmpty) &&
+                    <span style={span}>Поле не должно быть пустым!</span>}
+                    {(password.isDirty && password.minLengthError) &&
+                    <span style={span}>Пароль должен содержать не менее 6 символов!</span>}
+                    {(password.isDirty && password.maxLengthError) &&
+                    <span style={span}>Пароль не должен содержать более 20 символов!</span>}
                 </div>
+                {isPasswordCorrect === false && <span style={span}>Пароль введен не верно!</span>}
+                {isEmailExist ? <span style={span}>Такой пользователь не зарегистрирован!</span> : ''}
 
                 <button
                     className="form__button"
                     type="submit"
                     disabled={!email.isInputValid || !password.isInputValid}
                     onClick={handleSubmitEmail}
-
                 >
                     Войти
                 </button>
-
             </form>
         </div>
     );

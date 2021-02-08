@@ -1,10 +1,14 @@
 import React, { FC, MouseEvent, useState } from 'react';
-import './Authorization.css';
-import { NewUser } from '../../entity/NewUser';
-import { addNewUser, getUsers } from '../../service/NewUserService'
+import { Redirect } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { useInput } from '../../hooks/useInput';
 import { STYLE } from '../../assets/variables';
-import { Redirect } from 'react-router';
+import { ADD_USER } from '../../constants';
+import { addUserAction } from '../../actions/actionCreator';
+
+import './Authorization.css';
+
 
 const Registration: FC = () => {
 
@@ -12,17 +16,24 @@ const Registration: FC = () => {
     const surname = useInput('', {isEmpty: true, maxLength: 16, minLength: 2});
     const email = useInput('', {isEmpty: true, isEmail: true});
     const password = useInput('', {isEmpty: true, minLength: 6, maxLength: 20});
-    const [usersList, setUsersList] = useState<any>([]);
     const [userId, setUserId] = useState<number>(Math.floor(Math.random() * 1000000));
     const [isRegistration, setRegistration] = useState(false);
+    const dispatch = useDispatch();
 
     const handleSubmitUser = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        let newUser: NewUser = new NewUser(userId, name.value, surname.value, email.value, password.value);
-        addNewUser(newUser);
+        const user = {
+            type: ADD_USER,
+            id: userId,
+            name: name.value,
+            surname: surname.value,
+            email: email.value,
+            password: password.value,
+            isEntered: false
+        }
 
-        setUsersList(getUsers());
+        dispatch(addUserAction(user));
         setUserId(Math.floor(Math.random() * 1000000));
         setRegistration(true);
     }

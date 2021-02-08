@@ -6,6 +6,8 @@ import { NewItem } from '../../entity/NewItem';
 import { getNews } from '../../service/NewItemService';
 import {DEFAULT_CATEGORY, ORDER_BY_ASC} from '../../assets/variables';
 
+
+
 const Home: React.FC = () => {
     const news: Array<NewItem> = getNews();
 

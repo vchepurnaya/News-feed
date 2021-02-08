@@ -18,7 +18,8 @@ export const useValidation = (value, validations) => {
                     break;
                 case 'isEmail':
                     const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-                    return reg.test(String(value).toLowerCase()) ? setEmailError(false) : setEmailError(true);
+                    reg.test(String(value).toLowerCase()) ? setEmailError(false) : setEmailError(true);
+                    break;
                 case 'isEmpty':
                     value ? setEmpty(false) : setEmpty(true);
                     break;
@@ -39,6 +40,7 @@ export const useValidation = (value, validations) => {
         minLengthError,
         maxLengthError,
         emailError,
-        isInputValid
+        isInputValid,
+
     }
 }
