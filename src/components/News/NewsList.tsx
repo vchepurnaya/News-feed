@@ -1,35 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import NewsItem from './NewsItem';
-import './News.css';
-import { ORDER_BY_ASC, ORDER_BY_DESC} from '../../assets/variables';
+
+import { ORDER_BY_ASC, ORDER_BY_DESC } from '../../assets/variables';
 import { getNewItemById, getNews, removeNewItem } from '../../service/NewItemService';
 import { NewItem } from '../../entity/NewItem';
+
+import './News.css';
+
 
 type NewsListProps = {
     newsList: Array<NewItem>,
     search: string,
-    orderBy: string,
     setNewsList: any,
     setId: any,
     setTitle: any,
     setText: any,
     setCategory: any,
     setEditNewsItem: any,
-    setOrderBy: any
 }
 
 const NewsList: React.FC<NewsListProps> = ({
   newsList,
   search,
-  orderBy,
   setNewsList,
   setId,
   setTitle,
   setText,
   setCategory,
   setEditNewsItem,
-  setOrderBy
 }) =>  {
+    const [orderByDate, setOrderByDate] = useState<string>(ORDER_BY_ASC);
 
     const handleDelete = (id: number) => {
         removeNewItem(id);
@@ -38,7 +39,7 @@ const NewsList: React.FC<NewsListProps> = ({
 
     const handleSortNews = () => {
         let news: Array<NewItem> = getNews();
-        let isAsc: boolean = orderBy === ORDER_BY_ASC;
+        let isAsc: boolean = orderByDate === ORDER_BY_ASC;
 
         news = news.sort((newItem1, newItem2) => {
             let date1: number = new Date(newItem1.date).getTime();
@@ -48,7 +49,7 @@ const NewsList: React.FC<NewsListProps> = ({
         });
 
         setNewsList(news);
-        setOrderBy(isAsc ? ORDER_BY_DESC : ORDER_BY_ASC);
+        setOrderByDate(isAsc ? ORDER_BY_DESC : ORDER_BY_ASC);
     }
 
     const handleEdit = (id: number) => {
@@ -65,22 +66,29 @@ const NewsList: React.FC<NewsListProps> = ({
         }
     }
 
-    const filteredNews: Array<NewItem> = newsList.filter(newItem =>
-        newItem.text.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+    const filteredNews: Array<NewItem> = newsList.filter(newItem => {
+        return(
+            newItem.text.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+            newItem.title.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+            newItem.author.toLowerCase().indexOf(search.toLowerCase()) !== -1
+        );
+    });
 
     return (
         <div className="container">
             <div className="news__content">
-                <h3 className="news__content-title">Новостная лента</h3>
-                <div className="news__content-sorting">
+                <h3 className="news__content-title">
+                    Новостная лента
+                </h3>
+                <div className="news__sorting">
                     <button
-                        className="news__content-sorting_date"
+                        className="news__sorting-item"
                         onClick={handleSortNews}
                     >
                         Сортировать по дате
                         &nbsp;
-                        <span style={orderBy === ORDER_BY_ASC ? {} : {display: 'none'}}>&#8593;</span>
-                        <span style={orderBy === ORDER_BY_DESC ? {} : {display: 'none'}}>&#8595;</span>
+                        <span style={orderByDate === ORDER_BY_ASC ? {} : {display: 'none'}}>&#8593;</span>
+                        <span style={orderByDate === ORDER_BY_DESC ? {} : {display: 'none'}}>&#8595;</span>
                     </button>
                 </div>
                 <ul className="news__list">
@@ -94,6 +102,8 @@ const NewsList: React.FC<NewsListProps> = ({
                             editedFlag={item.editedFlag}
                             handleDelete={() => handleDelete(item.id)}
                             handleEdit={() => handleEdit(item.id)}
+                            author={item.author}
+                            userId={item.userId}
                         />
                     ))}
                 </ul>

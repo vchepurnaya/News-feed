@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import './News.css';
+import { RootState } from '../../redux/store';
 
 type NewsItemProps = {
     title: string,
@@ -9,36 +11,44 @@ type NewsItemProps = {
     date: Date,
     editedFlag: boolean,
     handleDelete: any,
-    handleEdit: any
+    handleEdit: any,
+    author: string,
+    userId: number
 }
 
 const NewsItem: React.FC<NewsItemProps> = ({
-  title,
-  text,
-  category,
-  date,
-  editedFlag,
-  handleDelete,
-  handleEdit
+   title,
+   text,
+   category,
+   date,
+   editedFlag,
+   handleDelete,
+   handleEdit,
+   author,
+   userId
 }) => {
     const [readMore, setReadMore] = useState(false);
+    const session = useSelector((state: RootState) => state.session);
+    const { isLog, currentUser } = session.session;
 
     return (
         <Fragment>
             <li className="news__item">
                 <h3 className="news__item-title">{title}</h3>
                 <p className="news__item-text">
-                    {readMore ? text : text.substring(0, 200)} . . .
+                    {readMore ? text : text.substring(0, 200)}
                     <button
                         className="news__item-btn-readMore"
                     onClick={() => setReadMore(!readMore)}>
-                        {readMore ? 'Скрыть' : 'Показать полностью'}
+                        {text.length > 200 && (readMore ? 'Скрыть' : 'Показать полностью')}
                     </button>
                 </p>
                 <p className="news__item-category">{category}</p>
-                <span></span>
-                <div className="news__item-btn">
-
+                <div
+                    className="news__item-btn"
+                    style={
+                        !isLog || (currentUser.id !== 1 && userId !== currentUser.id) ? {visibility: 'hidden'} : {}}
+                >
                     <button
                         className="news__item-btn-edit"
                         onClick={handleEdit}
@@ -56,8 +66,10 @@ const NewsItem: React.FC<NewsItemProps> = ({
                         </svg>
                     </button>
                 </div>
-                <div className="news__item-date">
-                    <span style={editedFlag ? {} : {display: 'none'}}>изменено</span>
+                <div className="news__item-data">
+                   <div>Автор: {author}</div>
+                    Дата:
+                    <span style={editedFlag ? {} : {display: 'none'}}> изменено</span>
                     &nbsp;
                     <span>{new Date(date).toLocaleString()}</span>
                 </div>

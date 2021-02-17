@@ -1,12 +1,12 @@
 import React, { FC, MouseEvent, useState } from 'react';
 import { Redirect } from 'react-router';
-import { useDispatch } from 'react-redux';
 
 import { useInput } from '../../hooks/useInput';
 import { STYLE } from '../../assets/variables';
 
 import './Authorization.css';
-import { addUser } from '../../redux/actions/usersAction';
+import { NewUser } from '../../entity/NewUser';
+import { addNewUser, getUsers } from '../../service/NewUserService';
 
 
 const Registration: FC = () => {
@@ -16,24 +16,18 @@ const Registration: FC = () => {
     const email = useInput('', {isEmpty: true, isEmail: true});
     const password = useInput('', {isEmpty: true, minLength: 6, maxLength: 20});
     const [userId, setUserId] = useState<number>(Math.floor(Math.random() * 1000000));
+    const [usersList, setUsersList] = useState<Array<NewUser>>([]);
     const [isRegistration, setRegistration] = useState(false);
-    const dispatch = useDispatch();
 
     const handleSubmitUser = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        const user = {
-            id: userId,
-            name: name.value,
-            surname: surname.value,
-            email: email.value,
-            password: password.value,
-            isEntered: false
-        }
+        let newUser: NewUser = new NewUser(userId, name.value, surname.value, email.value, password.value);
+        addNewUser(newUser);
 
+        setUsersList(getUsers());
         setUserId(Math.floor(Math.random() * 1000000));
         setRegistration(true);
-        dispatch(addUser(user));
     }
 
     if (isRegistration) {
@@ -55,8 +49,10 @@ const Registration: FC = () => {
                     />
                     <label className="form__field-name">Имя</label>
                     {(name.isDirty && name.isEmpty) && <span style={STYLE.span}>Поле не должно быть пустым</span>}
-                    {(name.isDirty && name.minLengthError) && <span style={STYLE.span}>Поле должно содержать не менее 6 символов</span>}
-                    {(name.isDirty && name.maxLengthError) && <span style={STYLE.span}>Поле должно содержать более 16 символов</span>}
+                    {(name.isDirty && name.minLengthError) &&
+                    <span style={STYLE.span}>Поле должно содержать не менее 6 символов</span>}
+                    {(name.isDirty && name.maxLengthError) &&
+                    <span style={STYLE.span}>Поле должно содержать более 16 символов</span>}
                 </div>
 
                 <div className="form__field">
@@ -71,8 +67,10 @@ const Registration: FC = () => {
                     />
                     <label className="form__field-name">Фамилия</label>
                     {(surname.isDirty && surname.isEmpty) && <span style={STYLE.span}>Поле не должно быть пустым</span>}
-                    {(surname.isDirty && surname.minLengthError) && <span style={STYLE.span}>Поле должно содержать не менее 6 символов</span>}
-                    {(surname.isDirty && surname.maxLengthError) && <span style={STYLE.span}>Поле должно содержать более 16 символов</span>}
+                    {(surname.isDirty && surname.minLengthError) &&
+                    <span style={STYLE.span}>Поле должно содержать не менее 6 символов</span>}
+                    {(surname.isDirty && surname.maxLengthError) &&
+                    <span style={STYLE.span}>Поле должно содержать более 16 символов</span>}
                 </div>
 
                 <div className="form__field">
@@ -101,9 +99,12 @@ const Registration: FC = () => {
                         onBlur={e => password.onBlur(e)}
                     />
                     <label className="form__field-name">Пароль</label>
-                    {(password.isDirty && password.isEmpty) && <span style={STYLE.span}>Поле не должно быть пустым</span>}
-                    {(password.isDirty && password.minLengthError) && <span style={STYLE.span}>Пароль должен содержать не менее 6 символов</span>}
-                    {(password.isDirty && password.maxLengthError) && <span style={STYLE.span}>Пароль не должен содержать более 20 символов</span>}
+                    {(password.isDirty && password.isEmpty) &&
+                    <span style={STYLE.span}>Поле не должно быть пустым</span>}
+                    {(password.isDirty && password.minLengthError) &&
+                    <span style={STYLE.span}>Пароль должен содержать не менее 6 символов</span>}
+                    {(password.isDirty && password.maxLengthError) &&
+                    <span style={STYLE.span}>Пароль не должен содержать более 20 символов</span>}
                 </div>
 
                 <button

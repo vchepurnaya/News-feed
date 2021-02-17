@@ -1,21 +1,17 @@
 import { NewUser } from '../entity/NewUser';
+import { admin } from '../assets/variables';
 
 export const getUsers = (): Array<NewUser> => {
     let usersJson = localStorage.getItem('users');
 
     let users: Array<NewUser>;
     if (usersJson === null) {
-        users = [];
+        users = [admin];
     } else {
         users = JSON.parse(usersJson);
     }
 
     return users;
-}
-
-export const getNewUserById = (id: number) => {
-    let users: Array<NewUser> = getUsers();
-    return users.find(newUser => newUser.id === id);
 }
 
 export const setUsers = (users: Array<NewUser>) => {

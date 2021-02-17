@@ -6,9 +6,11 @@
 }
 
 .header__title {
-    text-align: center;
+    display: flex;
+    align-items: center;
     font-size: 36px;
-    margin: 0;
+    margin: 0 0 0 25px;
+    height: 100%;
 }
 
 .header__nav {
@@ -16,6 +18,14 @@
     right: 10px;
     top: calc((70px - 50px) / 2);
     display: flex;
+    animation: fade .2s ease-in-out;
+}
+
+.header__user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
 }
 
 .header__link {
@@ -39,4 +49,103 @@
     font-weight: bold;
     text-decoration: none;
     color: #000000;
+}
+
+
+@media screen and (max-width: 650px) {
+    .header {
+        height: 100px;
+    }
+
+    .header__nav {
+        flex-direction: column;
+        z-index: 1;
+        visibility: hidden;
+        background-color: #ffffff;
+        position: fixed;
+        top: 50px;
+        right: 0;
+    }
+
+    .header__link {
+        border: 1px solid #000000;
+        margin: 0;
+    }
+
+    .header__nav ._active {
+        visibility: visible;
+    }
+
+    .header__burger {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+    }
+
+    .header__burger span,
+    .header__burger span::before,
+    .header__burger span::after {
+        position: absolute;
+        top: calc(50% - 1px);
+        left: calc(50% - 10px);
+        width: 20px;
+        height: 2px;
+        background-color: #000000;
+    }
+
+    .header__burger span::before,
+    .header__burger span::after {
+        content: '';
+        transition: .5s;
+    }
+
+    .header__burger span::before {
+        transform: translateY(-5px);
+    }
+
+    .header__burger span::after {
+        transform: translateY(5px);
+    }
+
+    ._active span {
+        height: 0;
+    }
+
+    ._active span::before {
+        transform: rotate(45deg);
+    }
+
+    ._active span::after {
+        transform: rotate(-45deg);
+    }
+
+    ._active {
+        transform: translateX(0%);
+        visibility: visible;
+    }
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+        transform: scale(.1);
+    }
+
+    25% {
+        opacity: .5;
+        transform: scale(.5);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

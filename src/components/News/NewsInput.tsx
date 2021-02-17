@@ -1,15 +1,19 @@
-import React from 'react';
-import './News.css';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
 import { DEFAULT_CATEGORY, FILTERS } from '../../assets/variables';
 import { NewItem } from '../../entity/NewItem';
 import { addNewItem, getNews, updateNewItem } from '../../service/NewItemService';
+import { RootState } from '../../redux/store';
+
+import './News.css';
 
 
 type newsInputProps = {
     title: string,
     text: string,
     category: string,
-    id: number,
+    newsId: number,
     editNewsItem: boolean,
     setTitle: any,
     setText: any,
@@ -17,7 +21,7 @@ type newsInputProps = {
     setNewsList: any,
     setId: any,
     setEditNewsItem: any,
-    newsList: Array<NewItem>
+    newsList: Array<NewItem>,
 }
 
 const NewsInput: React.FC<newsInputProps> = ({
@@ -31,8 +35,21 @@ const NewsInput: React.FC<newsInputProps> = ({
    setId,
    setEditNewsItem,
    editNewsItem,
-   id
+   newsId,
 }) => {
+
+    const [author, setAuthor] = useState<string>('');
+    const session = useSelector((state: RootState) => state.session);
+    const { name, surname, id } = session.session.currentUser;
+    const { isLog } = session.session
+
+    useEffect(() => {
+       if (isLog) {
+           setAuthor(`${name} ${surname}`)
+       } else {
+           setAuthor('Неизвестно')
+       }
+    }, [title]);
 
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -49,7 +66,16 @@ const NewsInput: React.FC<newsInputProps> = ({
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        let newItem: NewItem = new NewItem(id, title, text, category, new Date(), false);
+        let newItem: NewItem = new NewItem(
+            newsId,
+            title,
+            text,
+            category,
+            new Date(),
+            author,
+            false,
+            id
+        );
         addNewItem(newItem);
 
         setNewsList(getNews());
@@ -62,7 +88,16 @@ const NewsInput: React.FC<newsInputProps> = ({
     const handleUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        let newItem: NewItem = new NewItem(id, title, text, category, new Date(), true);
+        let newItem: NewItem = new NewItem(
+            newsId,
+            title,
+            text,
+            category,
+            new Date(),
+            author,
+            true,
+            id
+        );
         updateNewItem(newItem)
 
         setNewsList(getNews());

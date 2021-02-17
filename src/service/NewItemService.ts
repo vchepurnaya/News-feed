@@ -1,11 +1,12 @@
 import { NewItem } from '../entity/NewItem';
+import { defaultNews } from '../assets/variables';
 
 export const getNews = (): Array<NewItem> => {
     let newsJson = localStorage.getItem('news');
 
     let news: Array<NewItem>;
     if (newsJson === null) {
-        news = [];
+        news = defaultNews;
     } else {
         news = JSON.parse(newsJson);
     }

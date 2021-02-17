@@ -1,12 +1,14 @@
 import React, { MouseEvent, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 
 import { useInput } from '../../hooks/useInput';
-import { STYLE } from '../../assets/variables';
-
-import './Authorization.css';
 import { RootState } from '../../redux/store';
+import { addSession } from '../../redux/actions/sessionAction';
+
+import { STYLE } from '../../assets/variables';
+import './Authorization.css';
+import { getUsers } from '../../service/NewUserService';
 
 
 const Entry: React.FC = () => {
@@ -14,16 +16,27 @@ const Entry: React.FC = () => {
     const password = useInput('', {isEmpty: true, minLength: 6, maxLength: 20});
     const [isPasswordCorrect, setPasswordCorrect] = useState<null | boolean>(null);
     const [isEmailExist, setEmailExist] = useState(false);
-    const usersList = useSelector((state: RootState) => state.users);
+    const dispatch = useDispatch();
 
     const handleSubmitEmail = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        let isUserExist = usersList.users.find((user) => user.email === email.value);
+        let users = getUsers();
+        let isUserExist = users.find((user) => user.email === email.value);
 
         if (isUserExist) {
-            if (isUserExist.password === password.value)  {
+            if (isUserExist.password === password.value) {
                 setPasswordCorrect(true);
+                const session = {
+                    isLog: true,
+                    currentUser: {
+                        id: isUserExist.id,
+                        name: isUserExist.name,
+                        surname: isUserExist.surname
+                    }
+                }
+                dispatch(addSession(session));
+                sessionStorage.setItem('session', JSON.stringify(session));
 
             } else {
                 setPasswordCorrect(false);
@@ -34,10 +47,10 @@ const Entry: React.FC = () => {
     }
 
     if (isPasswordCorrect) {
-        return <Redirect to='/' />
+        return <Redirect to='/'/>
     }
 
-    const { span } = STYLE;
+    const {span} = STYLE;
 
     return (
         <div className="form">
@@ -95,3 +108,4 @@ const Entry: React.FC = () => {
 }
 
 export default Entry;
+

@@ -1,4 +1,6 @@
 import { Filters } from '../interfaces';
+import { NewItem } from '../entity/NewItem';
+import { NewUser } from '../entity/NewUser';
 
 export const  FILTERS: Array<Filters> = [
     { id: '1', value: 'sport', title: 'Спорт' },
@@ -20,3 +22,39 @@ export const STYLE = {
         fontSize: '14px'
     }
 }
+
+export const defaultNews = [
+    new NewItem(
+        1,
+        'default',
+        'default',
+        'Спорт',
+        new Date('December 01, 1999 03:24:00'),
+        'admin',
+        true,
+        1
+    ),
+    new NewItem(
+        2,
+        'default',
+        'default',
+        'Спорт',
+        new Date('December 01, 1999 03:24:00'),
+        'admin',
+        false,
+        1
+    ),
+    new NewItem(
+        3,
+        'default',
+        'default',
+        'Спорт',
+        new Date('December 01, 1999 03:24:00'),
+        'admin',
+        false,
+        1
+    )
+];
+
+export const admin = new NewUser(1, 'admin', 'admin', 'admin@admin.admin', '123456');
+

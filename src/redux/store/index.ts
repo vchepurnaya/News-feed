@@ -1,10 +1,11 @@
 import { combineReducers, createStore } from 'redux';
-import { UsersReducer } from '../reducers/usersReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
+
+import { SessionReducer } from '../reducers/sessionReducer';
 
 
 const rootReducer = combineReducers({
-    users: UsersReducer
+    session: SessionReducer
 })
 
 export const store = createStore(rootReducer, composeWithDevTools());

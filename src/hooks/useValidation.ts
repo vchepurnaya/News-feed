@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-export const useValidation = (value, validations) => {
-    const [isEmpty, setEmpty] = useState(false);
-    const [minLengthError, setMinLengthError] = useState(false);
-    const [maxLengthError, setMaxLengthError] = useState(false);
-    const [emailError, setEmailError] = useState(false);
-    const [isInputValid, setInputValid] = useState(false);
+export const useValidation = (value: string, validations: any) => {
+    const [isEmpty, setEmpty] = useState<boolean>(false);
+    const [minLengthError, setMinLengthError] = useState<boolean>(false);
+    const [maxLengthError, setMaxLengthError] = useState<boolean>(false);
+    const [emailError, setEmailError] = useState<boolean>(false);
+    const [isInputValid, setInputValid] = useState<boolean>(false);
 
     useEffect(() => {
         for (const validation in validations) {
@@ -41,6 +41,5 @@ export const useValidation = (value, validations) => {
         maxLengthError,
         emailError,
         isInputValid,
-
     }
 }

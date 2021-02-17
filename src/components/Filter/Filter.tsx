@@ -1,8 +1,9 @@
 import React from 'react';
+
 import './Filter.css';
 
 type FilterProps = {
-    setSearch :any
+    setSearch: any
 }
 
 const Filter: React.FC<FilterProps> = ({ setSearch }) => {
