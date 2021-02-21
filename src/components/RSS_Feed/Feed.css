@@ -1,0 +1,19 @@
+.news__item-text {
+    width: 100%;
+}
+
+.news__item-text i {
+    display: none;
+}
+
+.news__item-text img {
+    display: none;
+}
+
+.news__item-link {
+    color: #000000;
+    text-decoration: none;
+    outline: none;
+}
+
+

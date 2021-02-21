@@ -7,6 +7,7 @@ import { getNewItemById, getNews, removeNewItem } from '../../service/NewItemSer
 import { NewItem } from '../../entity/NewItem';
 
 import './News.css';
+import Feed from '../RSS_Feed/Feed';
 
 
 type NewsListProps = {
@@ -67,7 +68,7 @@ const NewsList: React.FC<NewsListProps> = ({
     }
 
     const filteredNews: Array<NewItem> = newsList.filter(newItem => {
-        return(
+        return (
             newItem.text.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
             newItem.title.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
             newItem.author.toLowerCase().indexOf(search.toLowerCase()) !== -1
@@ -106,6 +107,7 @@ const NewsList: React.FC<NewsListProps> = ({
                             userId={item.userId}
                         />
                     ))}
+                    <Feed />
                 </ul>
             </div>
         </div>
