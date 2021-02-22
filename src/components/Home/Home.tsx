@@ -3,11 +3,12 @@ import React, { Fragment, useState } from 'react';
 import Filter from '../Filter/Filter';
 import NewsInput from '../News/NewsInput';
 import NewsList from '../News/NewsList';
+import CurrencyRate from '../Currency/CurrencyRate';
 
 import { NewItem } from '../../entity/NewItem';
 import { getNews } from '../../service/NewItemService';
 import { DEFAULT_CATEGORY } from '../../assets/variables';
-import Currency from '../Currency/Currency';
+
 
 
 const Home: React.FC = () => {
@@ -24,7 +25,7 @@ const Home: React.FC = () => {
     return (
         <Fragment>
             <div className="wrapper">
-                <Currency />
+                <CurrencyRate />
                 <Filter
                     setSearch={setSearch}
                 />

@@ -32,19 +32,22 @@ const Header: React.FC = () => {
     if (session.session.isLog) {
         return (
             <div className="header">
-                <h1 className="header__title">Новости</h1>
+                <Link to="/">
+                    <h1 className="header__title">Новости</h1>
+                </Link>
                 <nav className="header__nav">
                     <div className="header__user">
                         <span>Приветствую, {session.session.currentUser.name}!</span>
                     </div>
-                    <div className="header__link">
-                        <Link
-                            onClick={updateSessionState}
-                            className="header__link-item"
-                            to="/"
-                        > Выход
-                        </Link>
-                    </div>
+                    <Link
+                        onClick={updateSessionState}
+                        className="header__link-item"
+                        to="/"
+                    >
+                        <div className="header__link">
+                            Выход
+                        </div>
+                    </Link>
                 </nav>
             </div>
         );
@@ -52,38 +55,43 @@ const Header: React.FC = () => {
 
     return (
         <div className="header">
-            <h1 className="header__title">Новости</h1>
+            <Link to="/">
+                <h1 className="header__title">Новости</h1>
+            </Link>
             <div
                 className={isMenuActive ? "header__burger _active" : "header__burger"}
                 onClick={() => setMenuActive(!isMenuActive)}
             >
-                <span />
+                <span/>
             </div>
             <nav className={isMenuActive ? "header__nav _active" : "header__nav"}>
-                <div className="header__link">
-                    <Link
-                        className="header__link-item"
-                        to="/"
-                    >
+                <Link
+                    className="header__link-item"
+                    to="/"
+                >
+                    <div className="header__link">
+
                         Главная
-                    </Link>
-                </div>
-                <div className="header__link">
-                    <Link
-                        to="/entry"
-                        className="header__link-item"
-                    >
+                    </div>
+                </Link>
+                <Link
+                    to="/entry"
+                    className="header__link-item"
+                >
+                    <div className="header__link">
+
                         Войти
-                    </Link>
-                </div>
-                <div className="header__link">
-                    <Link
-                        className="header__link-item"
-                        to="/registration"
-                    >
+                    </div>
+                </Link>
+                <Link
+                    className="header__link-item"
+                    to="/registration"
+                >
+                    <div className="header__link">
+
                         Регистрация
-                    </Link>
-                </div>
+                    </div>
+                </Link>
             </nav>
         </div>
     );

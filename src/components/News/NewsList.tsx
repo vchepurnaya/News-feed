@@ -7,7 +7,6 @@ import { getNewItemById, getNews, removeNewItem } from '../../service/NewItemSer
 import { NewItem } from '../../entity/NewItem';
 
 import './News.css';
-import Feed from '../RSS_Feed/Feed';
 
 
 type NewsListProps = {
@@ -22,15 +21,15 @@ type NewsListProps = {
 }
 
 const NewsList: React.FC<NewsListProps> = ({
-  newsList,
-  search,
-  setNewsList,
-  setId,
-  setTitle,
-  setText,
-  setCategory,
-  setEditNewsItem,
-}) =>  {
+                                               newsList,
+                                               search,
+                                               setNewsList,
+                                               setId,
+                                               setTitle,
+                                               setText,
+                                               setCategory,
+                                               setEditNewsItem,
+                                           }) => {
     const [orderByDate, setOrderByDate] = useState<string>(ORDER_BY_ASC);
 
     const handleDelete = (id: number) => {
@@ -107,7 +106,6 @@ const NewsList: React.FC<NewsListProps> = ({
                             userId={item.userId}
                         />
                     ))}
-                    <Feed />
                 </ul>
             </div>
         </div>

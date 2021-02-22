@@ -1,7 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import './Currency.css';
 
-const Currency = () => {
+type Currency = {
+    Cur_ID: number,
+    Date: Date,
+    Cur_Scale: number,
+    Cur_Abbreviation: string,
+    Cur_Name: string,
+    Cur_OfficialRate: number
+}
+
+const CurrencyRate: React.FC = () => {
 
     const [currency, setCurrency] = useState([]);
     const CUR_ID = [145, 298, 292, 355, 293];
@@ -10,7 +19,7 @@ const Currency = () => {
     let fetchData = () => {
         fetch(endPoint)
             .then(res => res.json())
-            .then(result => setCurrency(result.filter(item => CUR_ID.includes(item.Cur_ID))))
+            .then(result => setCurrency(result.filter((item: Currency) => CUR_ID.includes(item.Cur_ID))))
             .catch(error => console.log(error))
     }
 
@@ -27,11 +36,12 @@ const Currency = () => {
                 <tbody>
                 {
                     currency.map((item, index) => {
+                        const {Cur_Id, Cur_Name, Cur_OfficialRate, Cur_Abbreviation } = item;
                         return (
-                            <tr className="currency__column" key={`${item.Cur_Id}_${index}`}>
-                                <td className="currency__row" key={`${item.Cur_Id}__${index}`}>{item.Cur_Name}</td>
-                                <td className="currency__row" key={`${item.Cur_Id}-${index}`}>{item.Cur_OfficialRate}</td>
-                                <td className="currency__row" key={`${item.Cur_Id}+${index}`}> {item.Cur_Abbreviation}</td>
+                            <tr className="currency__column" key={`${Cur_Id}_${index}`}>
+                                <td className="currency__row" key={`${Cur_Id}__${index}`}>{Cur_Name}</td>
+                                <td className="currency__row" key={`${Cur_Id}-${index}`}>{Cur_OfficialRate}</td>
+                                <td className="currency__row" key={`${Cur_Id}+${index}`}> {Cur_Abbreviation}</td>
                             </tr>
                         )
                     })
@@ -42,4 +52,4 @@ const Currency = () => {
     );
 };
 
-export default Currency;
+export default CurrencyRate;
