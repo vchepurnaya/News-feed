@@ -1,13 +1,10 @@
 import React from 'react';
 
+import { FilterProps } from '../../assets/types';
+
 import './Filter.css';
 
-type FilterProps = {
-    setSearch: any
-}
-
 const Filter: React.FC<FilterProps> = ({ setSearch }) => {
-
     const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
     }

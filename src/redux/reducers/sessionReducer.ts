@@ -1,5 +1,6 @@
-import { SESSION } from '../../constants';
 import { AddSessionAction } from '../actions/sessionAction';
+import { getSession } from '../../assets/variables';
+export const SESSION = 'SESSION';
 
 export  interface CurrentUser {
     id: number,
@@ -16,28 +17,6 @@ export interface SessionState {
     session: Session
 }
 
-const getSession = (): Session => {
-    let session: Session;
-    let sessionJson = sessionStorage.getItem('session');
-
-    if (sessionJson === undefined || sessionJson === null) {
-        session = {
-            isLog: false,
-            currentUser: {
-                id: 0,
-                name: '',
-                surname: ''
-            }
-        }
-
-        sessionStorage.setItem('session', JSON.stringify(session));
-    } else {
-        session = JSON.parse(sessionJson);
-    }
-
-    return session;
-}
-
 const initialState: SessionState = {
     session: getSession()
 };
@@ -51,4 +30,4 @@ export const SessionReducer = (state = initialState, action: AddSessionAction): 
         default:
             return state;
     }
-}
+};

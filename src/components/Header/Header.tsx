@@ -7,7 +7,6 @@ import { addSession } from '../../redux/actions/sessionAction';
 
 import './Header.css';
 
-
 const Header: React.FC = () => {
     const session = useSelector((state: RootState) => state.session);
     const dispatch = useDispatch();
@@ -23,10 +22,10 @@ const Header: React.FC = () => {
                 name: '',
                 surname: ''
             }
-        }
+        };
 
         dispatch(addSession(session));
-        sessionStorage.setItem('session', JSON.stringify(session))
+        sessionStorage.setItem('session', JSON.stringify(session));
     }
 
     if (session.session.isLog) {
@@ -35,10 +34,26 @@ const Header: React.FC = () => {
                 <Link to="/">
                     <h1 className="header__title">Новости</h1>
                 </Link>
-                <nav className="header__nav">
+                <div
+                    className={isMenuActive ? "header__burger _active" : "header__burger"}
+                    onClick={() => setMenuActive(!isMenuActive)}
+                >
+                    <span/>
+                </div>
+                <nav className={isMenuActive ? "header__nav _active" : "header__nav"}>
                     <div className="header__user">
-                        <span>Приветствую, {session.session.currentUser.name}!</span>
+                        <span>
+                            Добро пожаловать, {session.session.currentUser.name}!
+                        </span>
                     </div>
+                    <Link
+                        className="header__link-item"
+                        to="/"
+                    >
+                        <div className="header__link">
+                            Главная
+                        </div>
+                    </Link>
                     <Link
                         onClick={updateSessionState}
                         className="header__link-item"
@@ -70,7 +85,6 @@ const Header: React.FC = () => {
                     to="/"
                 >
                     <div className="header__link">
-
                         Главная
                     </div>
                 </Link>
@@ -79,7 +93,6 @@ const Header: React.FC = () => {
                     className="header__link-item"
                 >
                     <div className="header__link">
-
                         Войти
                     </div>
                 </Link>
@@ -88,7 +101,6 @@ const Header: React.FC = () => {
                     to="/registration"
                 >
                     <div className="header__link">
-
                         Регистрация
                     </div>
                 </Link>

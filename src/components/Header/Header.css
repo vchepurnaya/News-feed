@@ -25,7 +25,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 10px;
+    margin-right: 50px;
 }
 
 .header__link {
@@ -68,9 +68,12 @@ a {
         z-index: 1;
         visibility: hidden;
         background-color: #ffffff;
-        position: fixed;
+        position: absolute;
         top: 50px;
         right: 0;
+        width: 320px;
+        min-height: 200px;
+        align-items: center;
     }
 
     .header__link {
@@ -88,7 +91,7 @@ a {
         position: absolute;
         top: 0;
         right: 0;
-        z-index: 1;
+        z-index: 100;
     }
 
     .header__burger span,

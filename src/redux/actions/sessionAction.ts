@@ -1,4 +1,4 @@
-import { SESSION } from '../../constants';
+import { SESSION } from '../reducers/sessionReducer';
 import { Session } from '../reducers/sessionReducer';
 
 export const addSession = (session: Session): UsersActionTypes => ({
@@ -11,4 +11,4 @@ export interface AddSessionAction {
     payload: Session
 }
 
-export type UsersActionTypes = AddSessionAction
+export type UsersActionTypes = AddSessionAction;

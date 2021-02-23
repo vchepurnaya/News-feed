@@ -1,44 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import './Feed.css';
+import { RouteComponentProps } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import Parser from 'rss-parser';
 
-type FeedObj = {
-    author: string,
-    categories: Array<string>,
-    content: string,
-    description: string,
-    enclosure: object,
-    guid: string,
-    link: string,
-    pubDate: Date,
-    thumbnail: string,
-    title: string
-}
+import ToTop from '../Usability/ToTop';
+import Preloader from '../Usability/Preloader';
 
-const Feed: React.FC = () => {
+import { getNewFeedById } from '../../service/NewFeedService';
+import { FeedObj, TParams } from '../../assets/types';
+
+import './Feed.css';
+
+const Feed = ({ match }: RouteComponentProps<TParams>) => {
     const [newsFeed, setNewsFeed] = useState<Array<FeedObj>>([]);
-    const endPoints = [
-        `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fnews.tut.by%2Frss%2Frealty.rss`,
-        `https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fnews.tut.by%2Frss%2Frealty%2Fbuilding.rss`
-    ]
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<boolean>(false);
+    let { id, title } = match.params;
+    let parser: Parser<FeedObj> = new Parser();
+
+    const getEndPoint = () => {
+        const feed = getNewFeedById(+id);
+
+        if (feed === undefined) {
+            return '';
+        } else {
+            return feed.url
+        }
+    }
+
+    /*some RSS feeds can't be loaded in the browser due to CORS security.To get around this i use this proxy*/
 
     useEffect(() => {
-        fetchData()
-    }, []);
+        const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
 
-    let fetchData = () => {
-        fetch(endPoints[0])
-            .then(res => res.json())
-            .then(result => setNewsFeed(result.items))
-            .catch(error => console.log(error))
+        setLoading(true);
+
+        parser.parseURL(
+            CORS_PROXY + getEndPoint(),
+            (err: any, feed: any) => {
+                if (err) {
+                    setError(true);
+                    throw err;
+                }
+
+                setNewsFeed(feed.items);
+                setLoading(false);
+            })
+    }, [id])
+
+    if (error) {
+        return <Redirect to='/' />
     }
 
     return (
         <div className="wrapper">
+            <Preloader isLoading={isLoading} />
+            <ToTop />
+            <h2 className="news__title" style={{textTransform: 'capitalize', textAlign: 'center'}}>{title}</h2>
             <ul className="news__list">
                 {
                     newsFeed.map((item, index) => {
-                        const {title, categories, content, pubDate, link, author} = item;
+                        const { title, categories, contentSnippet, pubDate, link } = item;
                         return (
                             <li
                                 className="news__item"
@@ -47,14 +69,16 @@ const Feed: React.FC = () => {
                                 <a
                                     className="news__item-link"
                                     href={link}
-                                    target={"_blank"}
+                                    target="_blank"
+                                    rel="noreferrer"
                                 >
                                     <h3 className="news__item-title">{title}</h3>
                                 </a>
-                                <p className="news__item-text" dangerouslySetInnerHTML={{__html: content}}/>
-                                <p className="news__item-category">{categories}</p>
+                                <p className="news__item-text">{contentSnippet}</p>
+                                {!categories ? 'Другое' : categories.map((category: any) => {
+                                    return <p className="news__item-category">{category._ || category}</p>
+                                })}
                                 <div className="news__item-data">
-                                    <div>Автор: {author}</div>
                                     Дата:
                                     <span> {new Date(pubDate).toLocaleString()}</span>
                                 </div>

@@ -6,7 +6,6 @@ export const useInput = (initialValue: string, validations: any) => {
     const [isDirty, setIsDirty] = useState<boolean>(false);
     const valid = useValidation(value, validations)
 
-
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
     }
@@ -20,6 +19,8 @@ export const useInput = (initialValue: string, validations: any) => {
         onChange,
         onBlur,
         ...valid,
-        isDirty
+        isDirty,
+        setValue,
+        setIsDirty
     }
 }

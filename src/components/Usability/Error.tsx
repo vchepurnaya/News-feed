@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 
-const Error: FC = () => {
-    return(
+const Error: React.FC = () => {
+    return (
         <div className="error">
             <div className="error__content">
                 <h3 className="error__title">Ошибка 404!</h3>
@@ -13,7 +13,6 @@ const Error: FC = () => {
                         вернитесь на главную страницу
                     </a>
                 </p>
-
             </div>
         </div>
     );

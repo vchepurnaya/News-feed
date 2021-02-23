@@ -65,40 +65,18 @@
     background-color: #9ba0b5;
 }
 
-/* Error Component ================================= */
-
-.error {
-    display: flex;
-    justify-content: center;
+@media screen and (max-width: 550px) {
+    .form {
+        width: 300px;
+    }
 }
 
-.error__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    background-color: #ffffff;
-    width: 400px;
-    padding: 20px;
-}
+@media screen and (max-width: 380px) {
+    .form {
+        width: 250px;
+    }
 
-.error__text {
-    font-size: 15px;
-    text-align: center;
-}
-
-.error__title {
-    font-size: 25px;
-    margin: 0;
-}
-
-.error__link {
-    margin-left: 5px;
-    color: #5264AE;
-    text-decoration: none;
-}
-
-.divider {
-    margin-top: 10px;
-    display: block;
+    .form__field-input {
+        width: 250px;
+    }
 }

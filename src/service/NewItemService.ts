@@ -12,22 +12,22 @@ export const getNews = (): Array<NewItem> => {
     }
 
     return news;
-}
+};
 
 export const getNewItemById = (id: number) => {
     let news: Array<NewItem> = getNews();
     return news.find(newItem => newItem.id === id);
-}
+};
 
 export const setNews = (news: Array<NewItem>) => {
     localStorage.setItem('news', JSON.stringify(news));
-}
+};
 
 export const addNewItem = (newItem: NewItem) => {
     let news: Array<NewItem> = getNews();
     news.push(newItem);
     setNews(news);
-}
+};
 
 export const updateNewItem = (newItem: NewItem) => {
     let news: Array<NewItem> = getNews();
@@ -42,10 +42,10 @@ export const updateNewItem = (newItem: NewItem) => {
 
         setNews(news);
     }
-}
+};
 
 export const removeNewItem = (id: number) => {
     let news: Array<NewItem> = getNews();
     news = news.filter(newItem => newItem.id !== id);
     setNews(news);
-}
+};

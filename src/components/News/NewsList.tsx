@@ -1,35 +1,25 @@
 import React, { useState } from 'react';
 
 import NewsItem from './NewsItem';
+import ToTop from '../Usability/ToTop';
 
 import { ORDER_BY_ASC, ORDER_BY_DESC } from '../../assets/variables';
 import { getNewItemById, getNews, removeNewItem } from '../../service/NewItemService';
 import { NewItem } from '../../entity/NewItem';
+import { NewsListProps } from '../../assets/types';
 
 import './News.css';
 
-
-type NewsListProps = {
-    newsList: Array<NewItem>,
-    search: string,
-    setNewsList: any,
-    setId: any,
-    setTitle: any,
-    setText: any,
-    setCategory: any,
-    setEditNewsItem: any,
-}
-
 const NewsList: React.FC<NewsListProps> = ({
-                                               newsList,
-                                               search,
-                                               setNewsList,
-                                               setId,
-                                               setTitle,
-                                               setText,
-                                               setCategory,
-                                               setEditNewsItem,
-                                           }) => {
+   newsList,
+   search,
+   setNewsList,
+   setId,
+   setTitle,
+   setText,
+   setCategory,
+   setEditNewsItem,
+}) => {
     const [orderByDate, setOrderByDate] = useState<string>(ORDER_BY_ASC);
 
     const handleDelete = (id: number) => {
@@ -75,8 +65,9 @@ const NewsList: React.FC<NewsListProps> = ({
     });
 
     return (
-        <div className="container">
-            <div className="news__content">
+        <div className="news__content">
+            <ToTop />
+            <div className="container">
                 <h3 className="news__content-title">
                     Новостная лента
                 </h3>

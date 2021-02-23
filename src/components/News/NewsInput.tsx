@@ -5,24 +5,9 @@ import { DEFAULT_CATEGORY, FILTERS } from '../../assets/variables';
 import { NewItem } from '../../entity/NewItem';
 import { addNewItem, getNews, updateNewItem } from '../../service/NewItemService';
 import { RootState } from '../../redux/store';
+import { newsInputProps } from '../../assets/types';
 
 import './News.css';
-
-
-type newsInputProps = {
-    title: string,
-    text: string,
-    category: string,
-    newsId: number,
-    editNewsItem: boolean,
-    setTitle: any,
-    setText: any,
-    setCategory: any,
-    setNewsList: any,
-    setId: any,
-    setEditNewsItem: any,
-    newsList: Array<NewItem>,
-}
 
 const NewsInput: React.FC<newsInputProps> = ({
    title,
@@ -37,18 +22,17 @@ const NewsInput: React.FC<newsInputProps> = ({
    editNewsItem,
    newsId,
 }) => {
-
     const [author, setAuthor] = useState<string>('');
     const session = useSelector((state: RootState) => state.session);
     const { name, surname, id } = session.session.currentUser;
-    const { isLog } = session.session
+    const { isLog } = session.session;
 
     useEffect(() => {
-       if (isLog) {
-           setAuthor(`${name} ${surname}`)
-       } else {
-           setAuthor('Неизвестно')
-       }
+        if (isLog) {
+            setAuthor(`${name} ${surname}`)
+        } else {
+            setAuthor('Неизвестно')
+        }
     }, [title]);
 
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,6 +60,7 @@ const NewsInput: React.FC<newsInputProps> = ({
             false,
             id
         );
+
         addNewItem(newItem);
 
         setNewsList(getNews());
@@ -98,6 +83,7 @@ const NewsInput: React.FC<newsInputProps> = ({
             true,
             id
         );
+
         updateNewItem(newItem)
 
         setNewsList(getNews());

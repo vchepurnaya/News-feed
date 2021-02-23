@@ -4,16 +4,14 @@ import Filter from '../Filter/Filter';
 import NewsInput from '../News/NewsInput';
 import NewsList from '../News/NewsList';
 import CurrencyRate from '../Currency/CurrencyRate';
+import Widget from '../RSS_Feed/Widget';
 
 import { NewItem } from '../../entity/NewItem';
 import { getNews } from '../../service/NewItemService';
 import { DEFAULT_CATEGORY } from '../../assets/variables';
 
-
-
 const Home: React.FC = () => {
     const news: Array<NewItem> = getNews();
-
     const [newsList, setNewsList] = useState<Array<NewItem>>(news);
     const [newsId, setId] = useState<number>(Math.floor(Math.random() * 1000000));
     const [title, setTitle] = useState<string>('');
@@ -26,6 +24,7 @@ const Home: React.FC = () => {
         <Fragment>
             <div className="wrapper">
                 <CurrencyRate />
+                <Widget />
                 <Filter
                     setSearch={setSearch}
                 />
